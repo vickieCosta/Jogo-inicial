@@ -1,0 +1,210 @@
+<!--
+*******TODO***********
+separar em arquivos
+mover
+menu
+atacar
+magia
+velocidade
+*******TODO***********
+    --> 
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        var ctx;
+        var mousePos;
+        var ctx;
+        var canvasX = 0;
+        var canvasY = 0;
+        var tamanhoX = 0;
+        var tamanhoY = 0;
+        var espaco = 0;
+        var qtX;
+        var qtY;
+
+        var clicou = [{ x: 0, y: 0 }];
+        var clicouTemp = [{ x: 0, y: 0 }];
+
+        var lPersonagens = [];
+        lPersonagens.push({ x: 8, y: 8 });
+        lPersonagens.push({ x: 7, y: 2 });
+        lPersonagens.push({ x: 10, y: 2 });
+        lPersonagens.push({ x: 7, y: 10 });
+
+        function init() {
+            //canvas.width = screen.width * 0.98;
+            ctx = document.getElementById('canvas').getContext('2d');
+            canvas.addEventListener('mousemove', function (evt) {
+                mousePos = getMousePos(canvas, evt);
+                //var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+                //writeMessage(canvas, message);
+            }, false);
+            canvas.addEventListener("mousedown", getPosition, false);
+            qtX = 20;
+            qtY = 20;
+            canvasX = canvas.width;
+            canvasY = canvas.height;
+            tamanhoX = canvasX / qtX;
+            tamanhoY = canvasY / qtY;
+            setInterval(draw, 500);
+        }
+
+        function draw() {
+
+            ctx.clearRect(0, 0, screen.width, screen.height); // clear canvas
+
+
+            for (var i = 0; i < qtX; i++) {
+                for (var j = 0; j < qtY; j++) {
+                    x = parseInt((tamanhoX * i));
+                    y = parseInt((tamanhoY * j));
+                    //console.info(x);
+                    //console.info(y);
+
+                    ctx.strokeStyle = "#000000";
+
+                    if (mousePos != undefined) {
+                        if ((mousePos.x > x && mousePos.x < (x + tamanhoX)) && (mousePos.y > y && mousePos.y < (y + tamanhoY))) {
+                            ctx.strokeStyle = "#FF0000";
+                        }
+                    }
+                    if (clicou != undefined) {
+                        if (parseInt(clicou.x / tamanhoX) == i && parseInt(clicou.y / tamanhoY) == j) {
+                            ctx.strokeStyle = "#00FF00";
+                        }
+                    }
+
+                    //ctx.fistrokeStylellRect(x, y, tamanhoX, tamanhoY);
+                    ctx.strokeRect(x, y, tamanhoX, tamanhoY);
+
+                    for (k = 0; k < lPersonagens.length; k++) {
+                        if (lPersonagens[k].x == i && lPersonagens[k].y == j) {
+                            x = parseInt((tamanhoX * i) + tamanhoX / 2);
+                            y = parseInt((tamanhoY * j) + tamanhoY / 2);
+                            ctx.beginPath();
+                            ctx.arc(x, y, tamanhoY / 2 - 2, 0, Math.PI * 2, true);
+                            ctx.stroke();
+                            ctx.closePath();
+
+                            if (parseInt(clicou.x / tamanhoX) == i && parseInt(clicou.y / tamanhoY) == j) {
+                                move(k, 5);
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        }
+
+        function move(personagem, qt) {
+
+            var x = lPersonagens[personagem].x;
+            var y = lPersonagens[personagem].y;
+            var auxX, auxY;
+            for (i = 0; i <= qt; i++) {
+                for (j = 0; j <= qt; j++) {
+
+                    if (((i + j) <= qt) && (!(i == 0 && j == 0))) {
+
+                        console.info(i + ' - ' + j + ' - ' + (i + j));
+
+                        auxX = parseInt((tamanhoX * (x - i)));
+                        auxY = parseInt((tamanhoY * y));
+                        ctx.fillRect(auxX, auxY, tamanhoX, tamanhoY);
+                        console.info('1 - ' + auxX + ' - ' + auxY);
+
+                        //auxX = parseInt((tamanhoX * (x - i)));
+                        auxY = parseInt((tamanhoY * (y + j)));
+                        ctx.fillRect(auxX, auxY, tamanhoX, tamanhoY);
+                        console.info('1 - ' + auxX + ' - ' + auxY);
+
+                        //auxX = parseInt((tamanhoX * (x - i)));
+                        auxY = parseInt((tamanhoY * (y - j)));
+                        ctx.fillRect(auxX, auxY, tamanhoX, tamanhoY);
+                        console.info('2 - ' + auxX + ' - ' + auxY);
+
+
+                        auxX = parseInt((tamanhoX * (x + i)));
+                        auxY = parseInt((tamanhoY * y));
+                        ctx.fillRect(auxX, auxY, tamanhoX, tamanhoY);
+                        console.info('2 - ' + auxX + ' - ' + auxY);
+
+                        //auxX = parseInt((tamanhoX * (x + i)));
+                        auxY = parseInt((tamanhoY * (y + j)));
+                        ctx.fillRect(auxX, auxY, tamanhoX, tamanhoY);
+                        console.info('3 - ' + auxX + ' - ' + auxY);
+
+                        //auxX = parseInt((tamanhoX * (x + i)));
+                        auxY = parseInt((tamanhoY * (y - j)));
+                        ctx.fillRect(auxX, auxY, tamanhoX, tamanhoY);
+                        console.info('3 - ' + auxX + ' - ' + auxY);
+
+
+                        auxX = parseInt((tamanhoX * x));
+                        auxY = parseInt((tamanhoY * (y-j)));
+                        ctx.fillRect(auxX, auxY, tamanhoX, tamanhoY);
+                        console.info('3 - ' + auxX + ' - ' + auxY);
+
+                        auxX = parseInt((tamanhoX * x));
+                        auxY = parseInt((tamanhoY * (y + j)));
+                        ctx.fillRect(auxX, auxY, tamanhoX, tamanhoY);
+                        console.info('4 - ' + auxX + ' - ' + auxY);
+
+
+                        //auxX = parseInt((tamanhoX * (x + i)));
+                        //auxY = parseInt((tamanhoY * (y + j)));
+                        //ctx.fillRect(auxX, auxY, tamanhoX, tamanhoY);
+                        //console.info('4 - ' + auxX + ' - ' + auxY);
+
+                        
+
+                        
+                    }
+
+                }
+            }
+        }
+
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                //x: evt.clientX - rect.left,
+                //y: evt.clientY - rect.top
+                x: Math.round((evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width),
+                y: Math.round((evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height)
+            };
+        }
+
+        function writeMessage(canvas, message) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = '18pt Calibri';
+            ctx.fillStyle = 'black';
+            ctx.fillText(message, 10, 25);
+        }
+
+        function getPosition(event) {
+            var x = event.x;
+            var y = event.y;
+
+            var canvas = document.getElementById("canvas");
+
+            x -= canvas.offsetLeft;
+            y -= canvas.offsetTop;
+
+            clicou.x = x;
+            clicou.y = y;
+
+            console.info("x:" + x  + " y:" + y );
+        }
+
+    </script>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body onload="init()">
+    <canvas id="canvas" width="800" height="600"></canvas>
+</body>
+</html>
