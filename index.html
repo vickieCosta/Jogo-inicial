@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+        #outPopUp {
+            position: absolute;
+            width: 300px;
+            height: 150px;
+            z-index: 15;
+            top: 50%;
+            left: 50%;
+            margin: -100px 0 0 -150px;
+            background: lightgrey;
+            border: 1px black solid;
+            visibility: hidden;
+        }
+        #lbIniciativa
+        {
+            text-align:center;
+            width:40px;
+            height:40px;
+        }
+        #vidaX
+        {
+            background-color: transparent ;
+            border: 0px;
+            background-size:40px 40px;
+            background-image: url(vida2.png);
+            background-repeat: no-repeat;
+            background-position: center center; 
+            text-align:center;
+            width:40px;
+            height:40px;
+        }
+        .fontePadrao
+        {
+            font:bold 18px verdana;
+            color:white;
+        }
+    </style>
+    <script>
+        function ordenar() {
+            var main = document.getElementById('main');
+
+            [].map.call(main.children, Object).sort(function (a, b) {
+                return +a.id.match(/\d+/) - +b.id.match(/\d+/);
+                //return +a.getAttribute('iniciativa') - +b.getAttribute('iniciativa');;
+            }).forEach(function (elem) {
+                main.appendChild(elem);
+            });
+        }
+        function Salvar() {
+            var div = document.createElement("div");
+            div.style.width = "100%";
+            div.style.height = "40px";
+            div.style.background = "gray";
+            div.className = "fontePadrao";
+            div.style.margin = "0px 0px 5px 0px";
+            //div.innerHTML = nome.value;
+            div.id = 'd_' + iniciativa.value;
+
+            var txtVida = document.createElement("input");
+            txtVida.setAttribute("type", "text");
+            txtVida.setAttribute("value", vida.value);
+            txtVida.setAttribute("name", "vida_" + nome.value);
+            txtVida.id =  "vidaX";
+            txtVida.className = "fontePadrao";
+            txtVida.style.cssFloat = "right";
+
+            var nm = document.createElement("Label");
+            nm.innerHTML = nome.value;
+            nm.style.verticalAlign = "-webkit-baseline-middle";
+
+            var inicia = document.createElement("Label");
+            inicia.innerHTML = "Ini: " + iniciativa.value;
+            inicia.id = "lbIniciativa";
+            inicia.style.verticalAlign = "-webkit-baseline-middle";
+            //inicia.style.color = "black";
+
+
+            var div2 = document.createElement("div");
+            div2.style.cssFloat = "right";
+
+            div2.appendChild(inicia);
+            div2.appendChild(txtVida);
+            
+            div2.style.width = "120px";
+            div2.style.height = "40px";
+
+            div.appendChild(nm);
+            div.appendChild(div2);
+
+            document.getElementById("main").appendChild(div);
+            ordenar();
+        }
+    </script>
+</head>
+<body>
+    <div id="xaxa" style="border:1px solid gray;width:300px;height:500px">
+        <div id="main"></div>
+            <div id="Adicionar" style="cursor:pointer" onclick="document.getElementById('outPopUp').style.visibility = 'visible';">
+                <img src="mais.jpg" width="80" height="80" style="display:block;margin:0 auto" /></div>
+        </div>
+
+    <div id="outPopUp">
+        <table width="100%" height="100%">
+            <tr>
+                <td>Nome:</td>
+                <td><input type="text" id="nome" value="nome" /></td>
+            </tr>
+            <tr>
+                <td>Vida:</td>
+                <td><input type="text" id="vida" value="10" /></td>
+            </tr>
+            <tr>
+                <td>Iniciativa:</td>
+                <td><input type="text" id="iniciativa" value="11" /></td>
+            </tr>
+            <tr>
+                <td>Time:</td>
+                <td><select id="time"><option value="1">1</option><option value="2">2</option></select></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button onclick="Salvar()">Incluir</button><button onclick="document.getElementById('outPopUp').style.visibility = 'hidden';">Fechar</button></td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>
